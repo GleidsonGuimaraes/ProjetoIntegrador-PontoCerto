@@ -1,0 +1,37 @@
+/**
+  Classe Ponto
+*/
+public class Ponto{
+    /**
+    *Membros públicos da classe Ponto
+    *  nome, latitude, longitude;    
+  */
+  public String nome;
+  public String latitude;
+  public String longitude;
+
+  /**
+    *O construtor da classe Ponto pede três parâmetros
+    *Lista de parâmetros:
+    *@param n = Nome do ponto
+    *@param la = Latitude do ponto
+    *@param lo = Longitude do ponto
+  */
+  public Ponto(String n, String la, String lo){
+    /**
+      *Atribuição dos parâmetros de entrada nas propriedades da classe
+    */
+    this.nome=n;
+    this.latitude=la;
+    this.longitude=lo;
+  }
+
+  /**
+    *Método ImprimirDados() impime os valores das propriedades da classe, não têm parâmetros de entrada e nem valor de retorno
+  */
+  public void ImprimiDados(){
+    System.out.println("Nome.....: "+this.nome);
+    System.out.println("Latitude.: "+this.latitude);
+    System.out.println("Longitude: "+this.longitude);
+  }
+}
