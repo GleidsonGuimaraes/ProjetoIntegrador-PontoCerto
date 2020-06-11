@@ -1,0 +1,60 @@
+/**
+  Classe Alarme
+*/
+public class Alarme{
+  /**
+    *Membros públicos da classe Alarme
+    *  nome, ponto, ativo;    
+  */
+  public String nome;
+  public Ponto ponto; /** O parâmetro ponto é do tipo Ponto */
+  public boolean ativo;
+
+  /**
+    *O construtor da classe Alarme pede dois parâmetros
+    *Lista de parâmetros:
+    *@param n = Nome do alarme
+    *@param p = Ponto do alarme
+  */
+  public Alarme(String n, Ponto p){
+    /**
+      *Atribuição dos parâmetros de entrada nas propriedades da classe
+    */
+    this.nome=n;
+    this.ponto=p;
+    this.ativo=true;
+  }
+
+  /**
+    *Método ImprimirDados() impime os valores das propriedades da classe, não têm parâmetros de entrada e nem valor de retorno
+  */
+  public void ImprimiDados(){
+    System.out.println("Nome.....: "+this.nome);
+    System.out.println("Ponto....: "+this.ponto.nome);
+  }
+
+  /**
+    *Método ativarAlarme(), ao ser chamado irá ativar o alarme
+  */
+  public void ativarAlarme(){
+    this.ativo=true;
+  }
+
+  /**
+    *Método desativarAlarme(), ao ser chamado irá desativar o alarme
+  */
+  public void desativarAlarme(){
+    this.ativo=false;
+  }
+
+  /**
+    *Método infoAlarme() impime os valores das propriedades da classe, não têm parâmetros de entrada e nem valor de retorno
+  */
+  public void infoAlarme(){
+    System.out.println("Nome Alarme.: "+this.nome);
+    System.out.println("Ativo.......: "+(this.ativo ? "S":"N"));
+    System.out.println("Nome Ponto..: "+this.ponto.nome);
+    System.out.println("Latitude....: "+this.ponto.latitude);
+    System.out.println("Longitude...: "+this.ponto.longitude);
+  }
+}
