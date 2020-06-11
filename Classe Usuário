@@ -1,0 +1,37 @@
+/**
+  Classe Usuario
+*/
+public class Usuario{
+  /**
+    *Membros públicos da classe Usuario
+    *  nome, email, senha;    
+  */
+  public String nome;
+  public String email;
+  public String senha;
+
+  /**
+    *O construtor da classe Usuario pede três parâmetros
+    *Lista de parâmetros:
+    *@param n = Nome do usuário
+    *@param e = Email do usuário
+    *@param s = Senha do usuário
+  */
+  public Usuario(String n, String e, String s){
+    /**
+      *Atribuição dos parâmetros de entrada nas propriedades da classe
+    */
+    this.nome=n;
+    this.email=e;
+    this.senha=s;
+  }
+
+  /**
+    *Método ImprimirDados() impime os valores das propriedades da classe, não têm parâmetros de entrada e nem valor de retorno
+  */
+  public void ImprimirDados(){
+    System.out.println("Nome: "+this.nome);
+    System.out.println("Email: "+this.email);
+    System.out.println("Senha: "+this.senha);
+  }
+}
