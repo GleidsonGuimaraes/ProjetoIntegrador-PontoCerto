@@ -1,0 +1,345 @@
+import java.util.Scanner;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.io.*;
+
+class Main {
+  /**
+    *Variáveis para indicar qual usuário está logado e se *existe algum usuário logado
+    *usuarioLogado => Recebe o usuário logado no sistema
+    *logado = true ou false para indicar se existe usuário *logado
+    *@version 1.0
+  */
+  public static Usuario usuarioLogado;
+  public static boolean logado;
+  /**
+    *Listas representando as tabelas do Banco de dados
+    *usuarios => Lista com os usuários cadastrados no sistema
+    *alarmes => Lista com os alaemres cadastrados no sistema
+    *pontos = Lista com os pontos cadastrados no sistema
+  */
+  public static List<Usuario> usuarios = new ArrayList<Usuario>();
+  public static List<Alarme> alarmes = new ArrayList<Alarme>();
+  public static List<Ponto> pontos = new ArrayList<Ponto>();
+  
+  public static void main(String[] args) {
+    logado=false;
+    int opc;
+
+    limparTela();
+
+    /**
+      *Chamado menu principal do programa
+      *MenuPrincipal()
+    */
+    opc=MenuPrincipal();
+    while((opc<1)&&(opc>7)){
+      System.out.println("Opção inválida");
+      opc=MenuPrincipal();
+    }
+
+    /**
+      *Loop principal do programa
+    */
+    while(opc!=7){
+      if(opc==1){
+        //Logar
+        logado=Logar();
+      }else if(opc==2){
+        //Novo Usuário
+        usuarios.add(novoUsuario());
+      }else if(opc==3){
+        if(logado){
+          //Novo Alarme
+          alarmes.add(novoAlarme());
+        }else{
+          System.out.println("Usuário não logado");
+        }  
+      }else if(opc==4){
+        if(logado){
+          //Gerenciar Alarmes
+          GerenciarAlarmes();
+        }else{
+          System.out.println("Usuário não logado");
+        }  
+      }else if(opc==5){
+        if(logado){
+          //Novo Ponto
+          pontos.add(novoPonto());
+        }else{
+          System.out.println("Usuário não logado");
+        } 
+      }else if(opc==6){
+        if(logado){
+          //Gerenciar Pontos
+          Gerenciarpontos();
+        }else{
+          System.out.println("Usuário não logado");
+        }   
+      }else if(opc==7){
+        //Sair do programa
+        System.exit(0);
+      }else{
+        System.out.println("Opção inválida");
+      }
+      opc=MenuPrincipal();
+    }
+  }
+
+  /**
+    *O método linha(int tam) traça uma linha no console de *acordo com o tamaho especificado no parâmetro tam.
+    *Ex: linha(20); //Traça uma linha com 20 traços
+    *@param tam = Valor inteiro que define o tamanho da linha
+  */
+  public static void linha(int tam){
+    System.out.print("\n");
+    for(int i=0;i<tam;i++){
+      System.out.print("-");
+    }
+    System.out.print("\n");
+  }
+
+  /**
+    *Método que desenta o Menu Principal do programa:
+    *  O método MenuPrincipal() possui um retorno do tipo int que retorna a opção escolhida pelo usuário
+    *@return Retorna o valor inteiro escolhido no menu
+  */
+  public static int MenuPrincipal(){
+    Scanner ler = new Scanner(System.in);
+    int opc=0;
+    linha(20);
+    System.out.println(">>> MENU PRINCIPAL  <<<");
+    System.out.println("1 - Logar");
+    System.out.println("2 - Novo Usuário");
+    System.out.println("3 - Novo Alarme");
+    System.out.println("4 - Gerenciar Alarmes");
+    System.out.println("5 - Novo Ponto");
+    System.out.println("6 - Gerenciar Pontos");
+    System.out.println("7 - Sair");
+    System.out.println("Usuário logado: " + (logado ? usuarioLogado.nome : "Não"));
+    System.out.print("\nDigite uma opção: ");
+    opc=ler.nextInt();
+    linha(20);
+    return opc;
+  }
+
+  /**
+    *Método pra limpar o console, basta chamar o método *limparTela(); para limpar o conteúdo do console
+  */
+  public static void limparTela(){
+    System.out.print("\033[H\033[2J");
+    System.out.flush();
+  }
+
+  /**
+   * Método Logar
+    *  Pede para o usuário digitar um nome e uma senha para realizar o Login
+    *  Retorna true caso tenha encontrado o usuário e fase caso não tenha encontrado
+    *@return Retorna true caso exista uauário logado e false caso não exista
+  */
+  public static boolean Logar(){
+    String nome="",senha="";
+    boolean res=false;
+    Scanner ler = new Scanner(System.in);
+    limparTela();
+    linha(20);
+    System.out.println(">>> LOGAR  <<<");
+    System.out.print("Nome: ");
+    nome=ler.nextLine();
+    System.out.print("Senha: ");
+    senha=ler.nextLine();
+    linha(20);
+    for(Usuario u : usuarios){
+      if(u.nome.equals(nome) && u.senha.equals(senha)){
+        res=true;
+        usuarioLogado=u;
+      }
+    }
+    if(!res){
+      System.out.println(">>> Usuário não encontrado <<<");
+    }
+    linha(20);
+    return res;
+  }
+
+  /**
+    *Método para cadastro de novos usuários
+    *O método pede para digitar nome, email e senha
+    *Criar um novo objeto da classe Usuario e retorna este objeto para quem fez a chamada do método
+    *@return Retorba o novo Usuario criado
+  */
+  public static Usuario novoUsuario(){
+    String nome,email,senha;
+    Usuario u;
+    Scanner ler = new Scanner(System.in);
+    limparTela();
+    linha(20);
+    System.out.println(">>> NOVO USUÁRIO  <<<");   
+    System.out.print("Nome: ");
+    nome=ler.nextLine();
+    System.out.print("Email: ");
+    email=ler.nextLine();
+    System.out.print("Senha: ");
+    senha=ler.nextLine();
+    linha(20);
+    u=new Usuario(nome,email,senha);
+    return u;
+  }
+
+  /**
+    *Método para criação de novos alarmes
+    *O método pede para digitar nome do alarme e nome do ponto que deseja usar
+    *Cria um novo objeto da classe Alarme e retorna este objeto para quem fez a chamada do método
+    *@return Retorna o novo alarme criado
+  */
+  public static Alarme novoAlarme(){
+    Scanner ler = new Scanner(System.in);
+    Alarme a;
+    String nome,nomePonto;
+    Ponto ponto=null;
+    boolean res=false;
+    limparTela();
+    linha(20);
+    System.out.println(">>> NOVO ALARME  <<<");   
+    System.out.print("Nome alarme: ");
+    nome=ler.nextLine();
+    System.out.print("Nome ponto.: ");
+    nomePonto=ler.nextLine();
+    linha(20);
+    for(Ponto p : pontos){
+      if(p.nome.equals(nomePonto)){
+        res=true;
+        ponto=p;
+      }
+    }
+    if(!res){
+      System.out.print("Ponto não encontrado. Alarme cadastrado sem ponto!");
+    }else{
+      System.out.print("Alarme cadastrado com ponto encontrado.");
+    }
+    linha(20);
+    a=new Alarme(nome,ponto);
+    return a;
+  }
+
+  /**
+    *Método para gerenciar os alarmes criados
+  */
+  public static void GerenciarAlarmes(){
+    Scanner ler = new Scanner(System.in);
+    limparTela();
+    linha(20);
+    System.out.println(">>> GERENCIAR ALARMES  <<<");
+    System.out.println("Alarmes definidos");
+    int i=0,cont=0;
+    int numAlarme=0,opc=1;
+    for(Alarme a:alarmes){
+      System.out.print(i + ": " + a.nome + " - " + (a.ativo ? "Ativado":"Desativado") + " - Ponto: " + a.ponto.nome + "\n");
+      cont++;
+    }
+    linha(20);
+    if(cont>0){
+      System.out.print("informe o número do alarme deseja gerenciar?");
+      numAlarme=ler.nextInt();
+      linha(20);
+      System.out.println("1 - Ativar alarme " + numAlarme + ":" + alarmes.get(numAlarme).nome);
+      System.out.println("2 - Desativar alarme "+ numAlarme + ":" +  alarmes.get(numAlarme).nome);
+      System.out.println("3 - Deletar alarme "+ numAlarme + ":" +  alarmes.get(numAlarme).nome);
+      System.out.println("4 - Cancelar alteração");
+      linha(20);
+      opc=ler.nextInt();
+      if(opc==1){
+        alarmes.get(numAlarme).ativo=true;
+        System.out.print("Alarme ativado");
+      }else if(opc==2){
+        alarmes.get(numAlarme).ativo=false;
+        System.out.print("Alarme desativado");
+      }else if(opc==3){
+        alarmes.remove(numAlarme);
+        System.out.print("Alarme removido");
+      }else{
+        System.out.print("Edição cancelada");
+      }
+    }else{
+      System.out.print("Não existem alarmes cadastrados");
+    }
+    linha(20);
+  }
+
+  /**
+    *Método para criação de novos pontos
+    *O método pede para digitar nome do ponto, latitude e longitude
+    *Cria um novo objeto da classe Ponto e retorna este objeto para quem fez a chamada do método
+  */
+  public static Ponto novoPonto(){
+    Ponto p;
+    String nome,latitude,longitude;
+    Scanner ler = new Scanner(System.in);
+    limparTela();
+    linha(20);
+    System.out.println(">>> NOVO PONTO  <<<");   
+    System.out.print("Nome ponto: ");
+    nome=ler.nextLine();
+    System.out.print("Latitude..: ");
+    latitude=ler.nextLine();
+    System.out.print("longitude..: ");
+    longitude=ler.nextLine();
+    linha(20);
+    p=new Ponto(nome,latitude,longitude);
+    
+    return p;
+  }
+
+  /**
+    *Método para gerenciar os pontos cadastrados
+  */
+  public static void Gerenciarpontos(){
+    Scanner ler = new Scanner(System.in);
+    limparTela();
+    linha(20);
+    System.out.println(">>> GERENCIAR PONTOS  <<<");
+    System.out.println("Pontos cadastrados");
+    String la,lo,np;
+    int i=0,cont=0;
+    int numPonto=0,opc=1;
+    for(Ponto p:pontos){
+      linha(20);
+      System.out.print(i + ": " + p.nome + "\n");
+      cont++;
+    }
+    if(cont>0){
+      linha(20);
+      System.out.print("informe o número do ponto deseja gerenciar? ");
+      numPonto=ler.nextInt();
+      System.out.println("1 - Alterar Lat. e Long.");
+      System.out.println("2 - Alterar Nome do ponto");
+      System.out.println("3 - Deletar ponto");
+      System.out.println("4 - Cancelar alteração");
+      linha(20);
+      opc=ler.nextInt();
+      if(opc==1){
+        System.out.print("Nova Latitude: ");
+        la=ler.nextLine();
+        System.out.print("Nova longitude: ");
+        lo=ler.nextLine();
+        pontos.get(numPonto).latitude=la;
+        pontos.get(numPonto).longitude=lo;
+        System.out.print("Local redefinido");
+      }else if(opc==2){
+        System.out.print("Digite o novo nome do ponto: ");
+        np=ler.nextLine();
+        pontos.get(numPonto).nome=np;
+        System.out.print("Nome redefinido");
+      }else if(opc==3){
+        pontos.remove(numPonto);
+        System.out.print("Ponto removido");
+      }else{
+        System.out.print("Edição cancelada");
+      }
+    }else{
+      System.out.print("Não existem pontos cadasttrados.");
+    }
+    linha(20);
+  }
+}
